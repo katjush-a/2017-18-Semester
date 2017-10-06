@@ -24,7 +24,7 @@ def askJoke(response):
             inquisition = inquisition.lower()
 
             # Check if user input continues the joke
-            if inquisition == "the spanish inquisition who" or inquisition == "the spanish inquisition? who":
+            if inquisition == "the spanish inquisition who" or inquisition == "the spanish inquisition who?":
                 print("No one expects the Spanish Inquisition!")
             # If not, ragequit
             else:
