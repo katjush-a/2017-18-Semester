@@ -33,6 +33,7 @@ class Grid:
         # Loop through each of the 8 adjacent cells around given coordinate
         for i in range(0, 8):
             try:
+                # Each value in x and y when put together represent a point adjacent to yPos and xPos
                 if self.__get__((yPos + y[i]), (xPos + x[i])) == 1:
                     alive += 1
                 else:
@@ -45,9 +46,11 @@ class Grid:
                 pass
 
         return alive
-
+    # nextGen method returns whether a cell, given its adjacent cells should be dead or alive in the next generation
     def __nextGen__(self, y, x):
+        # Returns 1 (alive) if alive cells is between 2-3
         if 2 <= self.__scan__(y, x) <= 3:
             return 1
+        # Otherwise return 0 (dead)
         else:
             return 0
