@@ -2,7 +2,7 @@
 
 
 # Grid class acts as specialized list, only allowing positive indexes
-class Grid:
+class Grid(object):
     # Initializing Grid creates a 2D list of height 'height' and width 'width'
     def __init__(self, height, width):
         self.list = [[0 for i in range(width)] for j in range(height)]
