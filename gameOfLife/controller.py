@@ -10,8 +10,8 @@ def simLoop():
     root.geometry("325x100+300+300")
 
     prompt = view.Prompt()
+    root.mainloop()
 
-    keepGoing = True
+    currentGen = model.Grid(prompt.verticalCells, prompt.horizontalCells)
 
-    while keepGoing:
-        pass
+    print(currentGen.list)

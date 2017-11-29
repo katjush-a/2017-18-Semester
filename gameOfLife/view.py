@@ -37,17 +37,13 @@ class Prompt(Frame):
         submit = Button(text="Submit", command=self.__submitCoords__)
         submit.grid(row=3)
 
-    # Define submitCoords method which opens new window with inputs given from textboxes
+    # Define submitCoords method which closes prompt and sets dimension data
     def __submitCoords__(self):
-        # Get data from hInput and vInput Entries
-        horizontalCells = self.hInput.get()
-        verticalCells = self.vInput.get()
+        # Get data from hInput and vInput Entries and convert to integers
+        self.horizontalCells = int(self.hInput.get())
+        self.verticalCells = int(self.vInput.get())
         # Close Prompt instance
         self.master.destroy()
-
-        # instantiate new window, gridDisplay with params of inputted dimensions
-        gridDisplay = GridDisplay(horizontalCells, verticalCells)
-
 
 class GridDisplay(Frame):
     def __init__(self, hCells, vCells):
