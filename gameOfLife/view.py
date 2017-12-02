@@ -3,6 +3,7 @@
 from tkinter import *
 from model import *
 
+colors = ['white', 'grey']
 
 # Create prompt window of type frame
 class Prompt(Frame):
@@ -45,7 +46,30 @@ class Prompt(Frame):
         # Close Prompt instance
         self.master.destroy()
 
+
+# Create GridDisplay window of type Frame
 class GridDisplay(Frame):
-    def __init__(self, hCells, vCells):
+    # Define constructor with parameters for height and width of grid
+    def __init__(self, hCells, vCells, grid):
+        # Call Frame constructor as constructor for GridDisplay
         Frame.__init__(self)
+        # Set page title
         self.master.title("Conway's Game of Life")
+
+        self.gridDisplay = [[Button(command=self.__toggle__(grid, row, column))
+                             for row in range(hCells)] for column in range(vCells)]
+
+        for row in range(len(self.gridDisplay)):
+            for column in range(len(self.gridDisplay[row])):
+                self.gridDisplay[row][column].configure(bg=colors[grid.__get__(row, column)])
+                self.gridDisplay[row][column].grid(row=row, column=column)
+
+
+    # Given a grid and position, toggles value of grid at that position
+    def __toggle__(self, grid, yPos, xPos):
+        # if value of grid.list at (yPos, xPos) is 1 change it to 0
+        if grid.__get__(yPos, xPos) == 1:
+            grid.__set__(yPos, xPos, 0)
+        # if value of grid.list at (yPos, xPos) is 0 change it to 1
+        elif grid.__get__(yPos, xPos) == 0:
+            grid.__set__(yPos, xPos, 1)
