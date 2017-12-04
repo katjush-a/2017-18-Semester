@@ -49,9 +49,13 @@ class Grid(object):
     
     # nextGen method returns whether a cell, given its adjacent cells should be dead or alive in the next generation
     def __nextGen__(self, y, x):
-        # Returns 1 (alive) if alive cells is between 2-3
-        if 2 <= self.__scan__(y, x) <= 3:
-            return 1
-        # Otherwise return 0 (dead)
+        if self.__get__(y, x) == 1:
+            if 2 <= self.__scan__(y, x) <= 3:
+                return 1
+            else:
+                return 0
         else:
-            return 0
+            if self.__scan__(y, x) == 3:
+                return 1
+            else:
+                return 0

@@ -96,7 +96,9 @@ class GridDisplay(Frame):
         for row in range(self.height):
             for column in range(self.width):
                 nextGrid.__set__(row, column, currentGrid.__nextGen__(row, column))
-        for row in range(len(nextGrid.list)):
-            print(nextGrid.list[row])
 
-# STEP WORKS FINE, FIX NEXTGEN, REDEFINE WHAT IT MEANS TO BE A NEIGHBOR
+        for row in range(self.height):
+            for column in range(self.width):
+                currentGrid.__set__(row, column, nextGrid.__get__(row, column))
+
+        self.__update__(currentGrid)
