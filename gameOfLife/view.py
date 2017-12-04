@@ -1,9 +1,9 @@
 # View for Conway's Game of Life Final Project, Samuel Jensen, 11/20/2017
 
 from tkinter import *
-from model import *
 
 colors = ['white', 'grey']
+
 
 # Create prompt window of type frame
 class Prompt(Frame):
@@ -41,8 +41,8 @@ class Prompt(Frame):
     # Define submitCoords method which closes prompt and sets dimension data
     def __submitCoords__(self):
         # Get data from hInput and vInput Entries and convert to integers
-        self.horizontalCells = int(self.hInput.get())
         self.verticalCells = int(self.vInput.get())
+        self.horizontalCells = int(self.hInput.get())
         # Close Prompt instance
         self.master.destroy()
 
@@ -50,26 +50,48 @@ class Prompt(Frame):
 # Create GridDisplay window of type Frame
 class GridDisplay(Frame):
     # Define constructor with parameters for height and width of grid
-    def __init__(self, hCells, vCells, grid):
+    def __init__(self, height, width, grid):
         # Call Frame constructor as constructor for GridDisplay
         Frame.__init__(self)
         # Set page title
         self.master.title("Conway's Game of Life")
 
-        self.gridDisplay = [[Button(command=self.__toggle__(grid, row, column))
-                             for row in range(hCells)] for column in range(vCells)]
+        # Set height and width parameters to be accessible from any method of GridDisplay
+        self.height = height
+        self.width = width
 
-        for row in range(len(self.gridDisplay)):
-            for column in range(len(self.gridDisplay[row])):
-                self.gridDisplay[row][column].configure(bg=colors[grid.__get__(row, column)])
-                self.gridDisplay[row][column].grid(row=row, column=column)
+        # Create 2D array of buttons with y and x variables for reference
+        self.buttons = [[Button(width=2, command=lambda y=row, x=column: self.__toggle__(grid, y, x)) for column in range(self.width)]
+                        for row in range(self.height)]
 
+        # Draw each index in said 2D array
+        for row in range(self.height):
+            for column in range(self.width):
+                self.buttons[row][column].grid(row=row, column=column, sticky=NSEW)
 
-    # Given a grid and position, toggles value of grid at that position
-    def __toggle__(self, grid, yPos, xPos):
-        # if value of grid.list at (yPos, xPos) is 1 change it to 0
-        if grid.__get__(yPos, xPos) == 1:
-            grid.__set__(yPos, xPos, 0)
-        # if value of grid.list at (yPos, xPos) is 0 change it to 1
-        elif grid.__get__(yPos, xPos) == 0:
-            grid.__set__(yPos, xPos, 1)
+        # Draw buttons for controls
+        pauseButton = Button(text="Pause").grid(row=(height + 1), columnspan=width)
+        playButton = Button(text="Play").grid(row=(height + 2), columnspan=width)
+        stepButton = Button(text="Step" '''command=self.__step__()''').grid(row=(height + 3), columnspan=width)
+
+    def __update__(self, grid):
+        # Iterate through each cell and update the color
+        for row in range(self.height):
+            for column in range(self.width):
+                self.buttons[row][column].config(bg=colors[grid.__get__(row, column)])
+                self.buttons[row][column].grid(row=row, column=column)
+
+    # Define toggle class, given coordinate, changes data in Grid object and updates display
+    def __toggle__(self, grid, y, x):
+        # If list index is 0 change to 1 and vice versa
+        if grid.__get__(y, x) == 0:
+            grid.__set__(y, x, 1)
+        elif grid.__get__(y, x) == 1:
+            grid.__set__(y, x, 0)
+
+        self.__update__(grid)
+
+    def __step__(self, current, next):
+        for row in range(self.height):
+            for column in range(self.width):
+                next[row][column] = current.__nextGen__(row, column)

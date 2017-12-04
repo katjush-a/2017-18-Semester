@@ -4,8 +4,6 @@ import view
 import model
 import tkinter
 
-# Variable representing the state of the simulation, 0 - paused, 1 - running
-simState = 0
 
 # Function encapsulating the event loop
 def simLoop():
@@ -16,16 +14,26 @@ def simLoop():
 
     # Instantiate the Prompt window
     prompt = view.Prompt()
-    # Start the Tk main loop
+    # Start the tkinter main loop
     root.mainloop()
-    # Once data is submitted and window is closed, generate array from inputted data
+    # Once data is submitted and window is closed, generate lists from inputted data
+    # currentGen will be the list interacted with
     currentGen = model.Grid(prompt.verticalCells, prompt.horizontalCells)
+    # nextGen will be the list which is generated from parsing currentGen
+    nextGen = model.Grid(prompt.verticalCells, prompt.horizontalCells)
 
-    print(currentGen.list)
-
+    # Instantiate the Tk class as new main window
     grid = tkinter.Tk()
-    gridDisplay = view.GridDisplay(prompt.horizontalCells, prompt.verticalCells, currentGen)
 
+    # Instantiate the GridDisplay window
+    gridDisplay = view.GridDisplay(prompt.verticalCells, prompt.horizontalCells, currentGen)
+
+    # Draw the grid window
+    gridDisplay.grid()
+
+    # Start the tkinter main loop
     grid.mainloop()
 
-    print(currentGen.list)
+    # DELETE BEFORE PRODUCTION
+    for row in range(len(currentGen.list)):
+        print(currentGen.list[row])
