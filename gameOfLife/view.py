@@ -1,6 +1,7 @@
 # View for Conway's Game of Life Final Project, Samuel Jensen, 11/20/2017
 
 from tkinter import *
+import time
 
 colors = ['white', 'grey']
 
@@ -71,9 +72,13 @@ class GridDisplay(Frame):
                 self.buttons[row][column].grid(row=row, column=column, sticky=NSEW)
 
         # Draw buttons for controls
-        pauseButton = Button(text="Pause").grid(row=(height + 1), columnspan=width)
-        playButton = Button(text="Play").grid(row=(height + 2), columnspan=width)
+        pauseButton = Button(text="Pause", command=lambda: self.__pause__()).grid(row=(height + 1), columnspan=width)
+        playButton = Button(text="Play", command=lambda: self.__play__(currentGrid, nextGrid)).grid(row=(height + 2), columnspan=width)
         stepButton = Button(text="Step", command=lambda: self.__step__(currentGrid, nextGrid)).grid(row=(height + 3), columnspan=width)
+        quitButton = Button(text="Quit", command=lambda: self.master.destroy()).grid(row=(height + 4), columnspan=width)
+
+        self.isPaused = 1
+
 
     def __update__(self, grid):
         # Iterate through each cell and update the color
@@ -102,3 +107,9 @@ class GridDisplay(Frame):
                 currentGrid.__set__(row, column, nextGrid.__get__(row, column))
 
         self.__update__(currentGrid)
+
+    def __pause__(self):
+        self.isPaused = 1
+
+    def __play__(self, currentGrid, nextGrid):
+        self.isPaused = 0

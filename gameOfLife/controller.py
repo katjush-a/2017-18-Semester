@@ -3,6 +3,7 @@
 import view
 import model
 import tkinter
+import time
 
 
 # Function encapsulating the event loop
@@ -14,7 +15,7 @@ def simLoop():
 
     # Instantiate the Prompt window
     prompt = view.Prompt()
-    # Start the tkinter main loop
+    # Start the tkinter event loop
     root.mainloop()
     # Once data is submitted and window is closed, generate lists from inputted data
     # currentGen will be the list interacted with
@@ -31,12 +32,11 @@ def simLoop():
     # Draw the grid window
     gridDisplay.grid()
 
-    # Start the tkinter main loop
-    grid.mainloop()
-
-    # DELETE BEFORE PRODUCTION
-    for row in range(len(currentGen.list)):
-        print(currentGen.list[row])
-    print('')
-    for row in range(len(nextGen.list)):
-        print(nextGen.list[row])
+    while 1:
+        if gridDisplay.isPaused != 1:
+            gridDisplay.__step__(currentGen, nextGen)
+            gridDisplay.grid()
+            time.sleep(0.5)
+        gridDisplay.grid()
+        grid.update_idletasks()
+        grid.update()
