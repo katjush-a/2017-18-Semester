@@ -35,7 +35,7 @@ class Prompt(Frame):
         self.vInput.grid(row=2, column=1)
 
         # Create submit button with command .__submitCoords__ and draw in grid row 3
-        submit = Button(text="Submit", command=self.__submitCoords__)
+        submit = Button(text="Submit", command=lambda: self.__submitCoords__())
         submit.grid(row=3)
 
     # Define submitCoords method which closes prompt and sets dimension data
@@ -50,7 +50,7 @@ class Prompt(Frame):
 # Create GridDisplay window of type Frame
 class GridDisplay(Frame):
     # Define constructor with parameters for height and width of grid
-    def __init__(self, height, width, grid):
+    def __init__(self, height, width, currentGrid, nextGrid):
         # Call Frame constructor as constructor for GridDisplay
         Frame.__init__(self)
         # Set page title
@@ -61,7 +61,8 @@ class GridDisplay(Frame):
         self.width = width
 
         # Create 2D array of buttons with y and x variables for reference
-        self.buttons = [[Button(width=2, command=lambda y=row, x=column: self.__toggle__(grid, y, x)) for column in range(self.width)]
+        self.buttons = [[Button(width=2, command=lambda y=row, x=column: self.__toggle__(currentGrid, y, x))
+                        for column in range(self.width)]
                         for row in range(self.height)]
 
         # Draw each index in said 2D array
@@ -72,7 +73,7 @@ class GridDisplay(Frame):
         # Draw buttons for controls
         pauseButton = Button(text="Pause").grid(row=(height + 1), columnspan=width)
         playButton = Button(text="Play").grid(row=(height + 2), columnspan=width)
-        stepButton = Button(text="Step" '''command=self.__step__()''').grid(row=(height + 3), columnspan=width)
+        stepButton = Button(text="Step", command=lambda: self.__step__(currentGrid, nextGrid)).grid(row=(height + 3), columnspan=width)
 
     def __update__(self, grid):
         # Iterate through each cell and update the color
@@ -91,7 +92,11 @@ class GridDisplay(Frame):
 
         self.__update__(grid)
 
-    def __step__(self, current, next):
+    def __step__(self, currentGrid, nextGrid):
         for row in range(self.height):
             for column in range(self.width):
-                next[row][column] = current.__nextGen__(row, column)
+                nextGrid.__set__(row, column, currentGrid.__nextGen__(row, column))
+        for row in range(len(nextGrid.list)):
+            print(nextGrid.list[row])
+
+# STEP WORKS FINE, FIX NEXTGEN, REDEFINE WHAT IT MEANS TO BE A NEIGHBOR

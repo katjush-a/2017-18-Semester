@@ -26,7 +26,7 @@ def simLoop():
     grid = tkinter.Tk()
 
     # Instantiate the GridDisplay window
-    gridDisplay = view.GridDisplay(prompt.verticalCells, prompt.horizontalCells, currentGen)
+    gridDisplay = view.GridDisplay(prompt.verticalCells, prompt.horizontalCells, currentGen, nextGen)
 
     # Draw the grid window
     gridDisplay.grid()
@@ -37,3 +37,6 @@ def simLoop():
     # DELETE BEFORE PRODUCTION
     for row in range(len(currentGen.list)):
         print(currentGen.list[row])
+    print('')
+    for row in range(len(nextGen.list)):
+        print(nextGen.list[row])
